@@ -6,8 +6,66 @@
 //  Copyright © 2016 Dennis Azorlibu. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import SpriteKit
+import AVFoundation
+
+class EndScene: SKScene {
+    
+    
+    var backGroundMusicPlayer = AVAudioPlayer()
+    
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(size: CGSize){
+        super.init(size: size)
+        
+        
+        let bgMusicURL = NSBundle.mainBundle().URLForResource("dbz", withExtension: "mp3")//music name and extension
+        try! backGroundMusicPlayer = AVAudioPlayer(contentsOfURL: bgMusicURL!)
+        backGroundMusicPlayer.prepareToPlay()
+        backGroundMusicPlayer.play()
+
+        
+        self.backgroundColor = SKColor.blueColor()
+        let message = "GAMEOVER AGGIE"
+        let message1 = "Tap the screen to play again"
+        
+        let label = SKLabelNode(fontNamed: "Chalkduster")
+        label.text = message
+        label.fontColor = SKColor.yellowColor()
+        label.fontSize = 55
+        label.position = CGPoint(x: self.size.width / 2 ,y: self.size.height / 2)
+        
+        let label1 = SKLabelNode(fontNamed: "Chalkduster")
+        label1.text = message1
+        label1.fontColor = SKColor.yellowColor()
+        label1.fontSize = 30
+        label1.position = CGPoint(x: self.size.width / 2 ,y: self.size.height / 8)
+        
+        addChild(label1)
+        addChild(label)
+        
+        
+        
+        
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let transition = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+        let gameScene = GameScene(size : self.size)
+        self.view?.presentScene(gameScene, transition: transition)
+        
+       
+    }
+    
+}
+
+/*
 
 class EndScene: SKScene {
     
@@ -19,9 +77,9 @@ class EndScene: SKScene {
     // var background = SKSpriteNode(imageNamed: "bgimage")
     override func didMoveToView(view: SKView) {
         
-        
+ 
                 
-        restartButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.size.width / 3, height: 10))
+        restartButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.size.width / 3, height: view.frame.size.height / 7 ))
         restartButton.center = CGPoint(x: view.frame.size.width / 2, y: view.frame.size.width / 7)
         
         restartButton.setTitle("Restart", forState: UIControlState.Normal)
@@ -42,7 +100,7 @@ class EndScene: SKScene {
         scoreLabel.text = "Score: \(score)"
         self.view?.addSubview(scoreLabel)
         
-         highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width / 3, height: 30))
+         highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width / 3, height: 50))
         highScoreLabel.center = CGPoint(x: view.frame.size.width / 2, y: view.frame.size.width / 2)
         highScoreLabel.text = "HighScore: \(highScore)"
         self.view?.addSubview(highScoreLabel)
@@ -55,10 +113,11 @@ class EndScene: SKScene {
         
         self.view?.presentScene(gameScene, transition: SKTransition.doorsCloseHorizontalWithDuration(0.3))
 
-        //self.view?.presentScene(GameScene(),transition: SKTransition.crossFadeWithDuration(0.3))
         restartButton.removeFromSuperview()
         highScoreLabel.removeFromSuperview()
         scoreLabel.removeFromSuperview()
     }
     
-}
+}*/
+
+

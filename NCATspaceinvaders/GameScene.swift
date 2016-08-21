@@ -36,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let bgMusicURL = NSBundle.mainBundle().URLForResource("bgMusic", withExtension: "mp3")//music name and extension
         try! backgroundMusicPlayer = AVAudioPlayer(contentsOfURL: bgMusicURL!)
+        backgroundMusicPlayer.numberOfLoops = -1
         backgroundMusicPlayer.prepareToPlay()
         backgroundMusicPlayer.play()
         
@@ -50,6 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         
         physicsWorld.contactDelegate = self;
+        
         
         self.scene?.backgroundColor = UIColor.blueColor()
         
@@ -137,16 +139,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (life == 0){
             player.removeFromParent()
             enemy.removeFromParent()
-            self.view?.presentScene(EndScene())
+            showGameOver()
+            //self.view?.presentScene(EndScene())
             scoreLabel.removeFromSuperview()
             lifeLabel.removeFromSuperview()
             backgroundMusicPlayer.stop()
+            
         }
-        
-        
         
     }
     
+    //What to do when lose life and game is over
+    func showGameOver(){
+        let transition = SKTransition.fadeWithDuration(0.5)
+        let gameOverScene = EndScene(size: self.size)
+        self.view?.presentScene(gameOverScene, transition: transition)
+    }
+  
     
     //function to use the spawn the bullets
     func spawnBullets(){
@@ -205,6 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
         
+        
         for touch in touches {
             let location = touch.locationInNode(self)
             
@@ -218,7 +228,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             let location = touch.locationInNode(self)
-            
             player.position.x = location.x
             
         }
